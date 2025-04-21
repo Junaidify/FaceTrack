@@ -1,11 +1,8 @@
-# FaceTrack
-Let your face mark your place.
-
 # FaceTrack 🎓📸
 
-**FaceTrack** is a smart, AI-powered attendance system that uses facial recognition to mark students as present — no manual roll calls, no cards, no touch.
+**FaceTrack** is an innovative, AI-powered attendance system that uses facial recognition to mark students as present — no manual roll calls, no cards, no touch.
 
-With just a webcam snap, FaceTrack verifies the student’s identity and logs their attendance directly into an Excel sheet. Designed for simplicity, security, and speed — it’s your modern classroom assistant.
+FaceTrack verifies the student’s identity with just a webcam snap and logs their attendance directly into an Excel sheet. Designed for simplicity, security, and speed — it’s your modern classroom assistant.
 
 ---
 
