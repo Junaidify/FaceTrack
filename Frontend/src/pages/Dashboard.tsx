@@ -1,5 +1,5 @@
 import Notifications from "@mui/icons-material/Notifications";
-import { useEffect, useRef, useState } from "react";
+import {useRef, useState } from "react";
 import Webcam from "react-webcam";
 import axios from "axios";
 
@@ -7,6 +7,7 @@ import axios from "axios";
 const Dashboard = () => {
   const webRef = useRef<Webcam | null>(null);
   const [webcamImage, setWebcamImage] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false); 
 
   const getScreenShot = () => {
     if (webRef.current !== null) {
@@ -19,17 +20,19 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {}, [webcamImage]);
-
   const sendImage = async () => {
     if (webcamImage) {
+      setIsLoading(true);
       try {
         const res = await axios.post("http://localhost:8000/attendance", {
           image: webcamImage
         });
-        console.log("Image Successfully sent", res);
+        console.log("Image Successfully sent", res.data);
       } catch (err) {
-        console.log("Couldn't send the image!", err);
+        console.error("Couldn't send the image!", err);
+      }
+      finally{
+        setIsLoading(false);
       }
     } else {
       console.log("No Image sent!");
@@ -44,10 +47,10 @@ const Dashboard = () => {
           <Notifications />
           <Webcam ref={webRef} screenshotFormat="image/jpeg" mirrored ={true} />
           <button onClick={getScreenShot}>Click Me</button>
-          <button onClick={sendImage}>Send Image</button>
+          {!isLoading && <button onClick={sendImage}>Send Image</button>}
         </div>
         <div>
-          <img src={webcamImage} />
+          <img src={webcamImage} alt="Capturing the image..." />
         </div>
       </div>
     </div>
