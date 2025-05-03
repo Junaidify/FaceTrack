@@ -1,32 +1,37 @@
-import cv2 as cv
-import sys
 import face_recognition as fr
+from fastapi import FastAPI, UploadFile, File
+from fastapi.responses import JSONResponse
+import os
 
-# Ensure image file is provided
-if len(sys.argv) < 2:
-    print("Error: No image file provided")
-    sys.exit(1)
-
-
-try:
-    known_img = fr.load_image_file('./images/reov.png')
-    unknown_img = fr.load_image_file(sys.argv[1])
-except FileNotFoundError as e:
-    print(f"Error: {e}")
-    sys.exit(1)
+app = FastAPI()
 
 
-try:
-    known_encoding = fr.face_encodings(known_img)[0]
-    unknown_encoding = fr.face_encodings(unknown_img)[0]
-except IndexError:
-    print("Error: No face found in one of the images.")
-    sys.exit(1)
+@app.post('/')
+async def imageReceived(studentImg: UploadFile = File(...)):
+    try:
+        contents = await studentImg.read()
+        filename = studentImg.filename
 
-# Compare faces
-results = fr.compare_faces([known_encoding], unknown_encoding)
-
-if results[0]:
-    print("Matched")
-else:
-    print("Unmatched")
+        if not contents:
+          return JSONResponse(status_code=400, content = {
+             "message": "failed to receive image"
+        })
+          
+        unknown_img = fr.load_image_file(contents)
+        unknown_img_locations = fr.face_locations(unknown_img)
+        unknown_img_encoding = fr.face_encodings(unknown_img, known_face_locations=unknown_img_locations, model='cnn')
+        
+        if not unknown_img_encoding : 
+            return JSONResponse(status_code=400, content = {"message" : "No face detected in uploaded image"})
+        
+        
+        unknown_encoding = unknown_img_encoding[0]
+        knownDir = './uploads'
+        
+        for filename in os.listdir(knownDir) : 
+            
+          
+    except Exception as e : 
+        return JSONResponse({
+            "Error" : "failed to process image!"
+        })

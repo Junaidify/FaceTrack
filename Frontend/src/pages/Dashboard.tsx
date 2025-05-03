@@ -43,14 +43,14 @@ const Dashboard = () => {
     <div>
       <div id="facetrack_logo">FaceTrack</div>
       <div>
-        <div>
+        <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <Notifications />
-          <Webcam ref={webRef} screenshotFormat="image/jpeg" mirrored ={true} />
+          <Webcam ref={webRef} screenshotFormat="image/jpeg" style={{textAlign: 'center'}} mirrored ={true} width={'200px'} height={'200px'} />
           <button onClick={getScreenShot}>Click Me</button>
           {!isLoading && <button onClick={sendImage}>Send Image</button>}
         </div>
         <div>
-          <img src={webcamImage} alt="Capturing the image..." />
+         {webcamImage &&  <img src={webcamImage} alt="Capturing the image..." />}
         </div>
       </div>
     </div>

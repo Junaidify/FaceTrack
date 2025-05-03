@@ -10,11 +10,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "axios": "^1.9.0",
     "body-parser": "^2.2.0",
     "child-process": "^1.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "form-data": "^4.0.2",
     "mongoose": "^8.13.2",
     "nodemon": "^3.1.9"
   }
