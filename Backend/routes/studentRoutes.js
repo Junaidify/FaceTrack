@@ -2,7 +2,7 @@ const router = require("express").Router();
 const FormData = require("form-data");
 const axios = require("axios");
 
-router.post("/attendance", (req, res) => {
+router.post("/attendance", async (req, res) => {
   try {
     const {image} = req.body;
 
@@ -20,7 +20,7 @@ router.post("/attendance", (req, res) => {
       contentType : 'image/png'
     });
 
-    const response = axios.post("http://localhost:5000", form, {
+    const response = await axios.post("http://localhost:5000", form, {
       headers: form.getHeaders(),
     });
 
