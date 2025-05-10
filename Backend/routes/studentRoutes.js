@@ -4,26 +4,33 @@ const axios = require("axios");
 
 router.post("/attendance", async (req, res) => {
   try {
-    const {image} = req.body;
+    const { image } = req.body;
 
     if (!image) {
-      console.error("Image couldn't receive...");
+      console.error("Image couldn't be received...", req.body);
       return res.status(400).json({ error: "Image isn't provided." });
     }
 
     const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
     const binaryImg = Buffer.from(base64Data, "base64");
 
+
     const form = new FormData();
-    form.append("studentImg", binaryImg, {
-      filename : 'studnet.png', 
-      contentType : 'image/png'
+  
+    form.append("image_received", binaryImg, {
+      filename: 'image_received.png',  
+      contentType: 'image/png', 
     });
 
-    const response = await axios.post("http://localhost:5000", form, {
-      headers: form.getHeaders(),
+    // Send the FormData to the FastAPI endpoint
+    const response = await axios.post("http://localhost:5000/save-encoding", form, {
+      headers: {
+        ...form.getHeaders(), 
+        "Content-Type": "multipart/form-data",  
+      },
     });
 
+   
     res.status(200).json(response.data);
   } catch (err) {
     console.error("Error during attendance", err);
