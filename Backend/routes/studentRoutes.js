@@ -18,15 +18,14 @@ router.post("/attendance", async (req, res) => {
     const form = new FormData();
   
     form.append("image_received", binaryImg, {
-      filename: 'image_received.png',  
-      contentType: 'image/png', 
+      filename: 'image_received.jpeg',  
+      contentType: 'image/jpeg', 
     });
 
     // Send the FormData to the FastAPI endpoint
-    const response = await axios.post("http://localhost:5000/save-encoding", form, {
+    const response = await axios.post("http://localhost:8000/save-encoding", form, {
       headers: {
-        ...form.getHeaders(), 
-        "Content-Type": "multipart/form-data",  
+        ...form.getHeaders()
       },
     });
 
@@ -34,7 +33,7 @@ router.post("/attendance", async (req, res) => {
     res.status(200).json(response.data);
   } catch (err) {
     console.error("Error during attendance", err);
-    res.status(500).json({ Error: "Internal server error!" });
+    res.status(500).json({ Error: err.message || "Internal server error!" });
   }
 });
 

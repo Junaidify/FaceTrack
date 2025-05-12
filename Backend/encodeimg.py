@@ -5,6 +5,9 @@ import os
 import pickle
 import uuid
 from io import BytesIO
+from PIL import Image
+import numpy as np
+
 
 app = FastAPI()
 
@@ -16,7 +19,9 @@ async def encodingImagesOfStudents(image_received : UploadFile = File(...)) :
         if not student_img : 
             return JSONResponse(content={"Error" : "Failed to receive image"})
         
-        unknown_img = fr.load_image_file(BytesIO(student_img))
+        image = Image.open(BytesIO(student_img)).convert("RGB")
+        
+        unknown_img = np.array(image)
         unknown_img_location = fr.face_locations(unknown_img)
         unknown_img_encoding = fr.face_encodings(unknown_img, known_face_locations = unknown_img_location)
 
@@ -47,7 +52,7 @@ async def encodingImagesOfStudents(image_received : UploadFile = File(...)) :
         with open(filepath, 'wb') as f : 
             pickle.dump(new_encoding, f)
 
-        return JSONResponse(content={"message" : f"file is saved as {filepath}.pkl"}, status_code=409)
+        return JSONResponse(content={"message": f"file is saved as {filepath}" }, status_code=409)
 
     except Exception as e : 
         import traceback 
