@@ -24,7 +24,7 @@ const Dashboard = () => {
     if (webcamImage) {
       setIsLoading(true);
       try {
-        const res = await axios.post("http://localhost:8000/attendance", {
+        const res = await axios.post("http://localhost:3000/attendance", {
           image: webcamImage
         });
         console.log("Image Successfully sent", res.data);
@@ -45,7 +45,7 @@ const Dashboard = () => {
       <div>
         <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
           <Notifications />
-          <Webcam ref={webRef} screenshotFormat="image/jpeg" style={{textAlign: 'center'}} mirrored ={true} width={'200px'} height={'200px'} />
+          <Webcam ref={webRef} screenshotFormat="image/jpeg" style={{textAlign: 'center'}} mirrored ={true} width={'300px'} height={'200px'} />
           <button onClick={getScreenShot}>Click Me</button>
           {!isLoading && <button onClick={sendImage}>Send Image</button>}
         </div>
