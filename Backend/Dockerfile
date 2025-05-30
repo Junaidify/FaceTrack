@@ -16,17 +16,14 @@ RUN apt-get update && apt-get install -y \
 # Set working directory
 WORKDIR /app
 
-# Copy only the backend folder
-COPY . /app
+# Copy requirements first
+COPY requirements.txt .
 
 # Install Python dependencies
-RUN pip install --upgrade pip && pip install \
-    face_recognition \
-    numpy \
-    uvicorn \
-    fastapi \
-    pillow \
-    python-multipart
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Run FastAPI server (note: subfolder path to encodeimg.py)
+# Copy the rest of the application
+COPY . .
+
+# Run FastAPI server
 CMD ["uvicorn", "pythonscript.encodeimg:app", "--host", "0.0.0.0", "--port", "8000"]
