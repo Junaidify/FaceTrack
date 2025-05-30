@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const studentRoutes = require('./routes/studentRoutes');
+const studentRoutes = require('./routes/students');
 app.use('/', studentRoutes);
 
 const PORT = process.env.PORT || 5000; 

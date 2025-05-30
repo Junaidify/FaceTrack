@@ -8,7 +8,8 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./Backend/uploads:/app/uploads
+      - ./Backend:/app
+      - /app/node_modules
     restart: unless-stopped
 
   frontend:
@@ -17,5 +18,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:80"
+    volumes:
+      - ./Frontend:/app
+      - /app/node_modules
     restart: unless-stopped
 

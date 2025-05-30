@@ -1,21 +1,28 @@
 # Build Stage
-FROM node:22 AS build
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
-# Install dependencies first
+# Install dependencies
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
-# Then copy rest of the app
+# Copy app source
 COPY . .
 
+# Build the app
 RUN npm run build
 
-# Serve stage
+# Optional: Remove devDependencies to reduce image size
+RUN npm prune --production
+
+# Serve Stage
 FROM nginx:alpine
 
-# Copy the built app to Nginx's HTML directory
+# Copy custom Nginx config for SPA routing
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy built app to Nginx's HTML directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
 EXPOSE 80
